@@ -14,30 +14,34 @@ object Main extends App {
 
   def part1(lines: Array[String]): Int= {
     val requiredFields = List("byr", "iyr", "eyr", "hgt", "hcl", "ecl", "pid")
-    var currentFields = requiredFields
+
     var fieldCounter = 0
+    var remainingFields = requiredFields
 
     for (row <- lines) {
       if (row.nonEmpty) {
+        // Remove field from remaining fields
         val pairs = row.split(" ")
         for (pair <- pairs) {
           val key = pair.split(":")(0)
-          currentFields = currentFields.filter(_ != key)
+          remainingFields = remainingFields.filter(_ != key)
         }
       } else {
-        if (currentFields.isEmpty)
+        // Increment counter if all required fields are included
+        if (remainingFields.isEmpty)
           fieldCounter += 1
-        currentFields = requiredFields
+        remainingFields = requiredFields
       }
     }
 
-    if (currentFields.isEmpty)
+    // Check last passport
+    if (remainingFields.isEmpty)
       fieldCounter += 1
 
     fieldCounter
   }
 
-  def verifyField(key: String, value : String): Boolean = {
+  def validField(key: String, value : String): Boolean = {
     var valid = false
     key match {
       case "byr" => {
@@ -85,8 +89,9 @@ object Main extends App {
 
   def part2(lines: Array[String]): Int= {
     val requiredFields = List("byr", "iyr", "eyr", "hgt", "hcl", "ecl", "pid")
-    var currentFields = requiredFields
+
     var fieldCounter = 0
+    var remainingFields = requiredFields
 
     for (row <- lines) {
       if (row.nonEmpty) {
@@ -96,18 +101,19 @@ object Main extends App {
           val keyValue = pair.split(":")
           val key = keyValue(0)
           val value = keyValue(1)
-          if (verifyField(key, value))
-            currentFields = currentFields.filter(_ != key)
+          if (validField(key, value))
+            remainingFields = remainingFields.filter(_ != key)
         }
       } else {
         // Increment counter if all required fields are included
-        if (currentFields.isEmpty)
+        if (remainingFields.isEmpty)
           fieldCounter += 1
-        currentFields = requiredFields
+        remainingFields = requiredFields
       }
     }
 
-    if (currentFields.isEmpty)
+    // Check last passport
+    if (remainingFields.isEmpty)
       fieldCounter += 1
 
     fieldCounter
