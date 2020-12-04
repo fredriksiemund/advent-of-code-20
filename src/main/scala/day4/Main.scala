@@ -12,35 +12,6 @@ object Main extends App {
     }
   }
 
-  def part1(lines: Array[String]): Int= {
-    val requiredFields = List("byr", "iyr", "eyr", "hgt", "hcl", "ecl", "pid")
-
-    var fieldCounter = 0
-    var remainingFields = requiredFields
-
-    for (row <- lines) {
-      if (row.nonEmpty) {
-        // Remove field from remaining fields
-        val pairs = row.split(" ")
-        for (pair <- pairs) {
-          val key = pair.split(":")(0)
-          remainingFields = remainingFields.filter(_ != key)
-        }
-      } else {
-        // Increment counter if all required fields are included
-        if (remainingFields.isEmpty)
-          fieldCounter += 1
-        remainingFields = requiredFields
-      }
-    }
-
-    // Check last passport
-    if (remainingFields.isEmpty)
-      fieldCounter += 1
-
-    fieldCounter
-  }
-
   def validField(key: String, value : String): Boolean = {
     var valid = false
     key match {
@@ -87,7 +58,7 @@ object Main extends App {
     valid
   }
 
-  def part2(lines: Array[String]): Int= {
+  def solve(lines: Array[String], partNbr: Int): Int= {
     val requiredFields = List("byr", "iyr", "eyr", "hgt", "hcl", "ecl", "pid")
 
     var fieldCounter = 0
@@ -95,14 +66,17 @@ object Main extends App {
 
     for (row <- lines) {
       if (row.nonEmpty) {
-        // Verify key value pairs
         val pairs = row.split(" ")
+        // Verify key value pairs
         for (pair <- pairs) {
           val keyValue = pair.split(":")
           val key = keyValue(0)
           val value = keyValue(1)
-          if (validField(key, value))
+          if (partNbr == 1) {
             remainingFields = remainingFields.filter(_ != key)
+          } else if (partNbr == 2 & validField(key, value)) {
+            remainingFields = remainingFields.filter(_ != key)
+          }
         }
       } else {
         // Increment counter if all required fields are included
@@ -123,8 +97,8 @@ object Main extends App {
   val file = Source.fromFile(filename)
   val lines = file.getLines.toArray
 
-  println("Part 1: " + part1(lines))
-  println("Part 2: " + part2(lines))
+  println("Part 1: " + solve(lines, 1))
+  println("Part 2: " + solve(lines, 2))
 
   file.close
 }
