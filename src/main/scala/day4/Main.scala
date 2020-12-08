@@ -1,5 +1,7 @@
 package day4
 
+import utils.Num.toInt
+
 import scala.io.Source
 import scala.util.matching.Regex
 
@@ -80,14 +82,6 @@ object Main extends App {
       case _ => valid = false
     }
     valid
-  }
-
-  def toInt(s: String): Int = {
-    try {
-      s.toInt
-    } catch {
-      case e: Exception => -1
-    }
   }
 
   println("Part 1: " + solve(lines, validateValue = false))

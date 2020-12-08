@@ -1,7 +1,7 @@
 package day6
 
+import scala.collection.mutable
 import scala.io.Source
-import scala.collection.mutable.Map
 
 object Main extends App {
   val filename = "src/main/scala/day6/input.txt"
@@ -27,7 +27,7 @@ object Main extends App {
   def part2(lines: Array[String]): Int = {
     var totalCounter = 0
     var groupCounter = 0
-    var answers = scala.collection.mutable.Map[Char, Int]()
+    var answers = mutable.Map[Char, Int]()
 
     for(line <- lines) {
       if (line.isEmpty) {

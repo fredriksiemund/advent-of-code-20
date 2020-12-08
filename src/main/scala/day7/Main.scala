@@ -1,5 +1,7 @@
 package day7
 
+import utils.Num.toInt
+
 import scala.collection.mutable
 import scala.io.Source
 
@@ -89,14 +91,6 @@ object Main extends App {
     for ((_, bag) <- bags)
       result = result :+ bag
     result
-  }
-
-  def toInt(s: String): Int = {
-    try {
-      s.toInt
-    } catch {
-      case _: Exception => -1
-    }
   }
 
   println("Part 1: " + part1(lines))
